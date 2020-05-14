@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 
 const port = process.env.PORT || 3000;
 
@@ -19,12 +20,14 @@ nextId = 2;
 function checkCredentials(req) {
   const userLogin = req.body.login;
   const userPass = req.body.pass;
-  console.log(users);
+  //console.log(users);
   const user = users.find(u => u.login === userLogin);
   if (!user) {
     return false;
   }
-  if (user.pass === userPass) {
+  const salt = user.salt;
+  const hash = bcrypt.hashSync(userPass, salt);
+  if (user.hash === hash) {
     return true;
   } else {
     return false;
@@ -32,13 +35,16 @@ function checkCredentials(req) {
 }
 
 app.post('/register', (req, res) => {
+  const salt = bcrypt.genSaltSync(1450);
+  const hash = bcrypt.hashSync(req.body.pass, salt);
   const user = {
     login: req.body.login,
-    pass: req.body.pass
+    salt: salt,
+    hash: hash
   };
   // Check that user not exists
   users.push(user);
-  res.json(user);
+  res.json({ login: user.login });
 });
 
 app.get('/credits', (req, res) => {
