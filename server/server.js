@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const randomString = require('./randomString');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 const app = express();
 
