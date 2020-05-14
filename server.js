@@ -21,15 +21,21 @@ app.get('/credits/:id', (req, res) => {
 });
 
 app.delete('/credits/:id', (req, res) => {
-  const id = +req.params.id;
-  const toDelete = credits.find(el => el.id === id);
-  if(!toDelete) {
-    res.sendStatus(404);
+  const login = req.get('login');
+  const pass = req.get('pass');
+  if(login !== 'alex' || pass !== '123456') {
+    res.sendStatus(401);
   } else {
-    credits = credits.filter(el => el !== toDelete);
-    res.send(toDelete);
+    const id = +req.params.id;
+    const toDelete = credits.find(el => el.id === id);
+    if(!toDelete) {
+      res.sendStatus(404);
+    } else {
+      credits = credits.filter(el => el !== toDelete);
+      res.send(toDelete);
+    }
+    res.json();
   }
-  res.json();
 });
 
 app.post('/credits', (req, res) => {
