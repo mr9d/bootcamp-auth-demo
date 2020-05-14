@@ -9,6 +9,10 @@ app.use(express.json());
 let credits = [
   { id: 1, name: "Jane", purpose: "New cat", sum: "500", date: "2020-02-01" },
 ];
+let users = [
+  {login: 'alex', pass: '123456'},
+  {login: 'creditCreator', pass: 'superSecretPassword'}
+];
 
 nextId = 2;
 
@@ -21,6 +25,16 @@ function checkCredentials(req, login, pass) {
     return true;
   }
 }
+
+app.post('/register', (req, res) => {
+  const user = {
+    login: req.body.login,
+    pass: req.body.pass
+  };
+  // Check that user not exists
+	users.push(user);
+	res.json(user);
+});
 
 app.get('/credits', (req, res) => {
   res.json(credits);
