@@ -13,8 +13,8 @@ let credits = [
 nextId = 2;
 
 function checkCredentials(req, login, pass) {
-  const userLogin = req.get('login');
-  const userPass = req.get('pass');
+  const userLogin = req.body.login;
+  const userPass = req.body.pass;
   if (login !== userLogin || pass !== userPass) {
     return false;
   } else {
