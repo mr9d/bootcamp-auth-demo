@@ -1,16 +1,19 @@
 import React from 'react';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
 import LoginForm from './LoginForm';
+import CreditList from './CreditList';
 
 class App extends React.Component {
 
   state = {
-    token: null,
-    username: null
+    token: localStorage.getItem('token'),
+    username: localStorage.getItem('username')
   }
 
   onLogin = (token, username) => {
     this.setState({ token, username });
+    localStorage.setItem('token', token);
+    localStorage.setItem('username', username);
   }
 
   render = () => {
@@ -33,6 +36,7 @@ class App extends React.Component {
         </Route>
         <Route path="/" exact>
           <h1>Кредиты</h1>
+          <CreditList token={this.state.token} />
         </Route>
       </BrowserRouter>
     );
