@@ -33,6 +33,19 @@ function checkCredentials(req) {
   }
 }
 
+function checkToken(req) {
+  const userToken = req.body.token;
+  if(!userToken) {
+    return false;
+  }
+  const ourToken = tokens.find(t => t.token === userToken);
+  if(!ourToken) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 app.post('/register', (req, res) => {
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(req.body.pass, salt);
@@ -52,6 +65,7 @@ app.post('/token', (req, res) => {
   } else {
     const newToken = randomString();
     const login = req.body.login;
+    // Remove old token
 		tokens.push({ login: login, token: newToken });
 		res.json({ login: login, token: newToken });
   }
@@ -66,7 +80,7 @@ app.get('/credits/:id', (req, res) => {
 });
 
 app.delete('/credits/:id', (req, res) => {
-  if (!checkCredentials(req)) {
+  if (!checkToken(req)) {
     res.sendStatus(401);
   } else {
     const id = +req.params.id;
@@ -82,7 +96,7 @@ app.delete('/credits/:id', (req, res) => {
 });
 
 app.post('/credits', (req, res) => {
-  if (!checkCredentials(req)) {
+  if (!checkToken(req)) {
     res.sendStatus(401);
   } else {
     let credit = {
