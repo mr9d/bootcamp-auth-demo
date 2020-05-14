@@ -11,8 +11,8 @@ app.use(express.json());
 let credits = [
   { id: 1, name: "Jane", purpose: "New cat", sum: "500", date: "2020-02-01" },
 ];
-let users = [
-];
+let users = [];
+let tokens = [];
 
 nextId = 2;
 
@@ -44,6 +44,17 @@ app.post('/register', (req, res) => {
   // Check that user not exists
   users.push(user);
   res.json({ login: user.login });
+});
+
+app.post('/token', (req, res) => {
+  if (!checkCredentials(req)) {
+    res.sendStatus(401);
+  } else {
+    const newToken = randomString();
+    const login = req.body.login;
+		tokens.push({ login: login, token: newToken });
+		res.json({ login: login, token: newToken });
+  }
 });
 
 app.get('/credits', (req, res) => {
