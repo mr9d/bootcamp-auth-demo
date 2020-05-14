@@ -10,19 +10,24 @@ let credits = [
   { id: 1, name: "Jane", purpose: "New cat", sum: "500", date: "2020-02-01" },
 ];
 let users = [
-  {login: 'alex', pass: '123456'},
-  {login: 'creditCreator', pass: 'superSecretPassword'}
+  { login: 'alex', pass: '123456' },
+  { login: 'creditCreator', pass: 'superSecretPassword' }
 ];
 
 nextId = 2;
 
-function checkCredentials(req, login, pass) {
+function checkCredentials(req) {
   const userLogin = req.body.login;
   const userPass = req.body.pass;
-  if (login !== userLogin || pass !== userPass) {
+  console.log(users);
+  const user = users.find(u => u.login === userLogin);
+  if (!user) {
     return false;
-  } else {
+  }
+  if (user.pass === userPass) {
     return true;
+  } else {
+    return false;
   }
 }
 
@@ -32,8 +37,8 @@ app.post('/register', (req, res) => {
     pass: req.body.pass
   };
   // Check that user not exists
-	users.push(user);
-	res.json(user);
+  users.push(user);
+  res.json(user);
 });
 
 app.get('/credits', (req, res) => {
@@ -45,7 +50,7 @@ app.get('/credits/:id', (req, res) => {
 });
 
 app.delete('/credits/:id', (req, res) => {
-  if (!checkCredentials(req, 'alex', '123456')) {
+  if (!checkCredentials(req)) {
     res.sendStatus(401);
   } else {
     const id = +req.params.id;
@@ -61,7 +66,7 @@ app.delete('/credits/:id', (req, res) => {
 });
 
 app.post('/credits', (req, res) => {
-  if (!checkCredentials(req, 'creditCreator', 'superSecretPassword')) {
+  if (!checkCredentials(req)) {
     res.sendStatus(401);
   } else {
     let credit = {
