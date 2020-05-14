@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const randomString = require('./randomString');
 
 const port = process.env.PORT || 3000;
 
@@ -11,8 +12,6 @@ let credits = [
   { id: 1, name: "Jane", purpose: "New cat", sum: "500", date: "2020-02-01" },
 ];
 let users = [
-  { login: 'alex', pass: '123456' },
-  { login: 'creditCreator', pass: 'superSecretPassword' }
 ];
 
 nextId = 2;
@@ -35,7 +34,7 @@ function checkCredentials(req) {
 }
 
 app.post('/register', (req, res) => {
-  const salt = bcrypt.genSaltSync(1450);
+  const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(req.body.pass, salt);
   const user = {
     login: req.body.login,
