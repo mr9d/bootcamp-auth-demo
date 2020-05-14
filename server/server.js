@@ -1,12 +1,14 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const randomString = require('./randomString');
+const cors = require('cors');
 
 const port = process.env.PORT || 3001;
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 let credits = [
   { id: 1, name: "Jane", purpose: "New cat", sum: "500", date: "2020-02-01" },
@@ -14,7 +16,7 @@ let credits = [
 let users = [];
 let tokens = [];
 
-nextId = 2;
+let nextId = 2;
 
 function checkCredentials(req) {
   const userLogin = req.body.login;
