@@ -12,6 +12,16 @@ let credits = [
 
 nextId = 2;
 
+function checkCredentials(req, login, pass) {
+  const userLogin = req.get('login');
+  const userPass = req.get('pass');
+  if (login !== userLogin || pass !== userPass) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 app.get('/credits', (req, res) => {
   res.json(credits);
 });
@@ -21,14 +31,12 @@ app.get('/credits/:id', (req, res) => {
 });
 
 app.delete('/credits/:id', (req, res) => {
-  const login = req.get('login');
-  const pass = req.get('pass');
-  if(login !== 'alex' || pass !== '123456') {
+  if (!checkCredentials(req, 'alex', '123456')) {
     res.sendStatus(401);
   } else {
     const id = +req.params.id;
     const toDelete = credits.find(el => el.id === id);
-    if(!toDelete) {
+    if (!toDelete) {
       res.sendStatus(404);
     } else {
       credits = credits.filter(el => el !== toDelete);
@@ -39,16 +47,20 @@ app.delete('/credits/:id', (req, res) => {
 });
 
 app.post('/credits', (req, res) => {
-  let credit = {
+  if (!checkCredentials(req, 'creditCreator', 'superSecretPassword')) {
+    res.sendStatus(401);
+  } else {
+    let credit = {
       id: nextId++,
       name: req.body.name,
       purpose: req.body.purpose,
       sum: +req.body.sum,
       date: req.body.date
+    }
+    console.log(credit);
+    credits.push(credit);
+    res.status(201).json(credit);
   }
-  console.log(credit);
-  credits.push(credit);
-  res.status(201).json(credit);
 });
 
 
