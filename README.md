@@ -4,7 +4,7 @@
 
 Demo application developed for security module of [PASHA Coding Bootcamp](https://pasha-holding.az/en/press-media/news/pasha-coding-bootcamp/) in 2020. The goal was to demonstrate different approaches to registration, authorization, and authentication mechanisms on a website. At the same time, the application should not be complete, so students could not use the provided code for their projects.
 
-The source code and the aplication itself was used for livestream for students.
+The source code and the application itself were used for live stream for students.
 
 ## Running application
 
@@ -72,13 +72,13 @@ Creates a new credit. Expects following JSON bosy:
 }
 ```
 
-Returns new entity on success, or `401` status on invalid authentication.
+Returns new entity on success or `401` status on invalid authentication.
 
 ### DELETE /credits/:id
 
 Creates a credit by id.
 
-Returns deleted entity on success, or `401` status on invalid authentication.
+Returns deleted entity on success or `401` status on invalid authentication.
 
 ## Used technologies
 
