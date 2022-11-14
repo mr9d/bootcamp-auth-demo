@@ -20,7 +20,7 @@ export default class CreditAddForm extends React.Component {
       purpose: this.state.purpose,
       sum: this.state.sum,
       date: this.state.date,
-      token: this.props.token,
+      //token: this.props.token,
     };
     fetch('http://localhost:3001/credits', {
       method: 'POST',

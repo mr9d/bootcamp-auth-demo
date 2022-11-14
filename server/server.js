@@ -1,14 +1,22 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const path = require('path');
+const cookieParser = require('cookie-parser');
 const randomString = require('./randomString');
-const cors = require('cors');
 
 const port = process.env.PORT || 3001;
 
 const app = express();
 
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
 
 let credits = [
   { id: 1, name: "Jane", purpose: "New cat", sum: "500", date: "2020-02-01" },
@@ -36,7 +44,7 @@ function checkCredentials(req) {
 }
 
 function checkToken(req) {
-  const userToken = req.body.token;
+  const userToken = req.cookies.token;
   if(!userToken) {
     return false;
   }
@@ -47,6 +55,9 @@ function checkToken(req) {
     return true;
   }
 }
+
+// Static files
+app.use(express.static(path.resolve('build')));
 
 app.post('/register', (req, res) => {
   const salt = bcrypt.genSaltSync(10);
@@ -68,8 +79,10 @@ app.post('/token', (req, res) => {
     const newToken = randomString();
     const login = req.body.login;
     // Remove old token
-		tokens.push({ login: login, token: newToken });
-		res.json({ login: login, token: newToken });
+    tokens.push({ login: login, token: newToken });
+    res.cookie('token', newToken, {
+			maxAge: 60 * 60 * 1000, httpOnly: true
+		}).json({ login: login });
   }
 });
 
@@ -114,5 +127,9 @@ app.post('/credits', (req, res) => {
   }
 });
 
+// Redirect all unprocessed requests to react
+app.get('/*', function (req, res) {
+  res.sendFile(path.resolve('build/index.html'));
+});
 
 app.listen(port, () => { console.log('Started server at port ' + port); });

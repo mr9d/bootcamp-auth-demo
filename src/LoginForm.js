@@ -25,7 +25,7 @@ export default class LoginForm extends React.Component {
     .then(res => res.json())
     .then((data) => {
       console.log(data);
-      this.props.onLogin(data.token, data.login);
+      this.props.onLogin(data.login);
     });
   }
 

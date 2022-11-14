@@ -6,14 +6,14 @@ import CreditList from './CreditList';
 class App extends React.Component {
 
   state = {
-    token: localStorage.getItem('token'),
-    username: localStorage.getItem('username')
+    //token: '',
+    username: ''
   }
 
-  onLogin = (token, username) => {
-    this.setState({ token, username });
-    localStorage.setItem('token', token);
-    localStorage.setItem('username', username);
+  onLogin = (username) => {
+    this.setState({ username });
+    // localStorage.setItem('token', token);
+    // localStorage.setItem('username', username);
   }
 
   render = () => {
