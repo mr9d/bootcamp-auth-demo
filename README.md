@@ -61,7 +61,7 @@ Returns one credit by provided id. Authentication is not required.
 
 ### POST /credits
 
-Creates a new credit. Expects following JSON bosy:
+Creates a new credit. Expects following JSON body:
 
 ```
 {
