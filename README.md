@@ -19,7 +19,7 @@ If you want to run the application, you can do the following:
 
 After the successful execution the application should be available at <http://localhost:3000>
 
-Back-end REST API should be available for calls from Insomnia or Postman at <http://localhost:3001>
+Back-end REST API should be available for calls from a REST client at <http://localhost:3001>
 
 ## How to use
 
@@ -36,7 +36,7 @@ Expects user credentials JSON body:
 }
 ```
 
-Return login on successful registration.
+Returns login on successful registration.
 
 ### POST /token
 
@@ -49,15 +49,15 @@ Expects user credentials JSON body:
 }
 ```
 
-Return login on successful authentication and set `token` cookie.
+Returns login on successful authentication and set `token` cookie.
 
 ### GET /credits
 
-Return list of credits. Authentication is not required.
+Returns list of credits. Authentication is not required.
 
 ### GET /credits/:id
 
-Return one credit by provided id. Authentication is not required.
+Returns one credit by provided id. Authentication is not required.
 
 ### POST /credits
 
@@ -72,13 +72,13 @@ Creates a new credit. Expects following JSON bosy:
 }
 ```
 
-Return new entity on success, or `401` status on invalid authentication.
+Returns new entity on success, or `401` status on invalid authentication.
 
 ### DELETE /credits/:id
 
 Creates a credit by id.
 
-Return deleted entity on success, or `401` status on invalid authentication.
+Returns deleted entity on success, or `401` status on invalid authentication.
 
 ## Used technologies
 
